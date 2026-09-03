@@ -68,7 +68,6 @@ export default function KanbanBoard({
 
     // over a column
     if (String(over.id).startsWith('col-')) {
-      const parts = String(over.id).split('-')
       // col-IN_PROGRESS-1  →  parts[1] may be split weirdly for IN_PROGRESS
       // Format: col-{STATUS}-{groupId}
       const withoutPrefix = String(over.id).slice(4) // remove "col-"
@@ -93,8 +92,6 @@ export default function KanbanBoard({
       }
     }
   }
-
-  const allCards = STATUS_ORDER.flatMap((s) => group.columns[s])
 
   return (
     <>

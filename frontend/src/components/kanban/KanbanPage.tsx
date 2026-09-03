@@ -12,15 +12,10 @@ export default function KanbanPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   // Fetch all groups with their cards
-  const { data: groups = [], isLoading } = useQuery({
+  const { data: groups = [], isLoading } = useQuery<Group[]>({
     queryKey: ['groups'],
     queryFn: groupsApi.getAll,
-    onSuccess: (data: Group[]) => {
-      if (data.length > 0 && activeGroupId === null) {
-        setActiveGroupId(data[0].id)
-      }
-    },
-  } as Parameters<typeof useQuery>[0])
+  })
 
   // Auto-select first group when data loads
   if (groups.length > 0 && activeGroupId === null) {
@@ -48,7 +43,7 @@ export default function KanbanPage() {
     onSuccess: (_, deletedId) => {
       queryClient.invalidateQueries({ queryKey: ['groups'] })
       if (activeGroupId === deletedId) {
-        const remaining = groups.filter((g) => g.id !== deletedId)
+        const remaining = groups.filter((g: Group) => g.id !== deletedId)
         setActiveGroupId(remaining.length > 0 ? remaining[0].id : null)
       }
     },
@@ -122,7 +117,7 @@ export default function KanbanPage() {
     [deleteCardMutation]
   )
 
-  const activeGroup = groups.find((g) => g.id === activeGroupId) ?? null
+  const activeGroup = groups.find((g: Group) => g.id === activeGroupId) ?? null
 
   return (
     <div className="flex h-[calc(100vh-56px)]">
