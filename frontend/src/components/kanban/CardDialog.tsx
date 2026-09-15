@@ -25,11 +25,6 @@ export default function CardDialog({ card, groups, onClose, onUpdate, onDelete }
   const [confirmDelete, setConfirmDelete] = useState(false)
   const overlayRef = useRef<HTMLDivElement>(null)
 
-  // Close on overlay click
-  const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === overlayRef.current) onClose()
-  }
-
   // Close on Escape
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -77,7 +72,6 @@ export default function CardDialog({ card, groups, onClose, onUpdate, onDelete }
   return (
     <div
       ref={overlayRef}
-      onClick={handleOverlayClick}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in"
       style={{ backgroundColor: 'var(--bg-overlay)' }}
     >
@@ -229,7 +223,7 @@ export default function CardDialog({ card, groups, onClose, onUpdate, onDelete }
                   Data de entrega
                 </label>
 
-                <InputDate 
+                <InputDate
                   value={isoToDateValue(dueDate)}
                   onChange={(date) => setDueDate(dateValueToIso(date))}
                 />
@@ -310,6 +304,12 @@ export default function CardDialog({ card, groups, onClose, onUpdate, onDelete }
                 }}
                 onFocus={(e) => (e.target.style.borderColor = 'var(--primary)')}
                 onBlur={(e) => (e.target.style.borderColor = 'var(--border-default)')}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && e.ctrlKey) {
+                    e.preventDefault()
+                    handleSave()
+                  }
+                }}
               />
             ) : (
               <div

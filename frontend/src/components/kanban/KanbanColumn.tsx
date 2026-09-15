@@ -43,7 +43,6 @@ export default function KanbanColumn({
     try {
       await onAddCard(newTitle.trim(), status, groupId)
       setNewTitle('')
-      setAdding(false)
     } finally {
       setSaving(false)
     }
@@ -53,7 +52,7 @@ export default function KanbanColumn({
 
   return (
     <div
-      className="flex flex-col w-72 flex-shrink-0 rounded-2xl overflow-hidden"
+      className="flex flex-col w-72 flex-shrink-0 rounded-2xl overflow-hidden h-full"
       style={{
         backgroundColor: 'var(--bg-column)',
         border: isOver ? '2px solid var(--primary)' : '2px solid transparent',
